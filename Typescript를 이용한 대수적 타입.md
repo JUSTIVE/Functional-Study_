@@ -17,7 +17,7 @@
 
 예를 들어, 트럼프 카드 세트와 타로 카드 세트를 포함하며 현실세계의 카드게임에 쓰이는 카드들의 세트를 모방하는 임의의 CardSet 타입은 다음과 같이 나타낼 수 있습니다.
 
-```
+```typescript
 type CardSet = TrumpCard | TarotCard
 ```
 
@@ -29,7 +29,7 @@ type CardSet = TrumpCard | TarotCard
 
 위의 예제에 이어, 하나의 트럼프 카드는 문양을 나타내는 Suit 과 그 카드의 값인 Rank 를 동시에 가지므로, 다음과 같이 나타낼 수 있습니다.
 
-```
+```typescript
 type TrumpRank =
   1 | 2 | 3
   | 4 | 5 | 6
@@ -45,7 +45,7 @@ type TrumpCard = [TrumpSuit,TrumpRank]
 
 튜플 타입의 하위 타입들은 인덱스를 통해 접근할 수 있으나, 코드를 작성할 때에 튜플 타입을 인덱스로 접근하는 것이 직관적이지 않고 코드의 가독성을 해치므로, 일반적으로 Typescript에서는 튜플 타입을 대신하여 Record Type을 통해 Product Type을 이용합니다. 위의 TrumpCard 타입은 Record로 변환하면 다음과 같이 작성할 수 있습니다.
 
-```
+```typescript
 type TrumpCard = {
   suit:TrumpSuit;
   rank:TrumpRank;
@@ -54,7 +54,7 @@ type TrumpCard = {
 
 이제 각 TrumpCard 타입의 값들의 문양과 랭크는 각각의 이름인 suit와 rank를 통해 접근할 수 있습니다. 아래 예제의 isSpade 함수는 주어진 TrumpCard 타입의 suit 속성값을 참조하여 인자로 받은 trumpCard 타입의 값의 문양이 ♠️인 경우에는 true, 아닌 경우에는 false를 반환 하는 함수입니다.
 
-```
+```typescript
 function isSpade(trumpCard:TrumpCard){
   return trumpCard.suit === "♠️"
 }
@@ -76,7 +76,7 @@ const isHeartKingSpade = isSpade(heartKing) //false
 
 위의 트럼프 카드 타입의 예제에서 조커 카드가 빠졌다고 생각하셨나요? 위의 트럼프 카드를 확장하면 됩니다. 이처럼 대수적 타입은 확장에 유연한 구조를 가지고 있습니다. 아래의 코드에서는 흑백 조커 카드 BWJoker 와 컬러 조커 카드 ColorJoker 를 Sum Type 으로 확장한 TrumpJoker 타입을 기존의 TrumpCard 타입에 Sum Type으로 확장했습니다.
 
-```
+```typescript
 type TrumpRank =
   1 | 2 | 3
   | 4 | 5 | 6
@@ -110,7 +110,7 @@ type TrumpCard = {
 
 우선 조커가 아닌, suit와 rank의 속성을 가지는 집합인 TrumpNormalCard 타입을 아래와 같이 정의합니다.
 
-```
+```typescript
 type TrumpNormalCard = {
   suit:TrumpSuit;
   rank:TrumpRank;
@@ -122,7 +122,7 @@ suit 와 rank 외에 trumpType:"normal"이 추가된 것에 주목하세요. 이
 
 TrumpJoker 타입도 trumpType 속성을 가지도록 아래와 같이 확장합니다.
 
-```
+```typescript
 type TrumpJoker = {
   jokerType:"BW"|"Color"
   trumpType:"joker"
@@ -131,13 +131,13 @@ type TrumpJoker = {
 
 그리고 TrumpCard 타입을 TrumpNormalCard 와 TrumpJoker의 Sum Type으로 구성합니다.
 
-```
+```typescript
 type TrumpCard = TrumpNormalCard|TrumpJoker
 ```
 
 이제 isSpade 함수에서 바로 인자로 들어온 trumpCard의 suit 속성을 참조하는 것이 아닌, trumpType을 먼저 판별하도록 수정합니다. 그리고 normal 인 경우에만 suit 속성을 통해 판별합니다.
 
-```
+```typescript
 function isSpade(trumpCard:TrumpCard){
   switch(trumpCard.trumpType){
     case "normal" :  return trumpCard.suit === "♠️"
@@ -150,7 +150,7 @@ function isSpade(trumpCard:TrumpCard){
 
 1. **인자로 들어온 trumpCard 값을 조커의 하위 타입 리터럴들과 비교한 후 예외 절에서 suit 속성을 참조하여 판별한다.**
 
-```
+```typescript
 function isSpade(trumpCard:TrumpCard){
   if(trumpCard==="BWJoker"||trumpCard==="ColorJoker")
     return false
@@ -162,7 +162,7 @@ Typescript의 타입 추론은 강력하기 때문에, early return 에서 반�
 
 **2. 인자로 들어온 trumpCard 값의 suit 속성이 존재하는 지 판별한 후, suit 속성이 존재하는 경우에만 suit 속성을 참조하여 판별한다.**
 
-```
+```typescript
 function isSpade(trumpCard:TrumpCard){
   if("suit" in trumpCard)
     return trumpCard.suit==="♠️"
@@ -174,7 +174,7 @@ function isSpade(trumpCard:TrumpCard){
 
 예를 들어, 온라인 쇼핑몰이라는 하나의 도메인이 있을 때, 같은 아이디와 비밀번호를 가지는 사용자와 관리자, 그리고 판매자가 있는 매우 간단한 다음의 타입들을 정의하겠습니다.
 
-```
+```typescript
 type ShoppingItem = string
 type Store = {
   name:string,
@@ -206,7 +206,7 @@ type Admin = {
 
 만약 UserType 의 값을 인자로 받는 함수가 있고, 이 함수가 각각의 사용자의 유형별로 처리를 해야 한다면 각각의 하위 타입들을 고유하게 구분할 수 있는 속성군들을 추려내어야 할 것입니다.
 
-```
+```typescript
 function applyToUserType(userType:UserType){
   if("cart" in userType){
     //...Customer의 처리문
@@ -228,7 +228,7 @@ function applyToUserType(userType:UserType){
 
 예를 들어, 위의 TrumpCard예제에서의 TrumpCard 타입을 유효하지 않은 값으로 설정하려 하면  타입스크립트 컴파일러는 다음과 같은 경고를 제시합니다.
 
-```
+```typescript
 const cardInstance:TrumpCard = {
   suit:"👍",
   rank:"😎",
@@ -246,7 +246,7 @@ const cardInstance:TrumpCard = {
 
 Sum type으로 정의된 타입에 대해서 switch-case문을 이용한 분기문을 작성할 때에, default문을 이용한 fallback을 기재하지 않았다면 case로 정의되지 않은 Sum Type의 하위 타입이 있음을 나타내는 경고를 보여주기도 합니다.
 
-```
+```typescript
 function NameOfSuit(trumpSuit:TrumpSuit){
   switch(trumpSuit){
     case "♠️":
