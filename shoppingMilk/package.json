@@ -1,0 +1,18 @@
+{
+  "name": "ShoppingMilkExample",
+  "version": "1.0.0",
+  "description": "a simple example of ROP",
+  "main": "index.js",
+  "repository": "https://github.com/JUSTIVE/Functional-Study_/tree/master/shoppingMilk",
+  "author": "JUSTIVE",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "build": "yarn autoclean --force && yarn tsc -d --outDir ./dist",
+    "run": "yarn build && node ./dist"
+  }
+}
