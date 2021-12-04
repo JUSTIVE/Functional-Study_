@@ -12,7 +12,7 @@ export type CartError = Result<Cart, NoCartExists>
 export type PurchaseResult = Result<Items, PurchaseError>
 export type CheckWalletResult = Result<Wallet, PurchaseError>
 
-export function addItemToCart(newItem: ItemType, amount: number, mart: Mart, cart: Cart)
+function addItemToCart(newItem: ItemType, amount: number, mart: Mart, cart: Cart)
   : AddItemResult {
   if (amount == 0)
     return SUCCESS(cart)
@@ -22,7 +22,7 @@ export function addItemToCart(newItem: ItemType, amount: number, mart: Mart, car
     : FAILURE(NO_ITEM_EXISTS(newItem))
 }
 
-export function addItemToCartIfExists(newItem: ItemType, amount: number, mart: Mart, cart: Cart)
+function addItemToCartIfExists(newItem: ItemType, amount: number, mart: Mart, cart: Cart)
   : AddItemResult {
   if (amount == 0)
     return SUCCESS(cart)
@@ -32,7 +32,7 @@ export function addItemToCartIfExists(newItem: ItemType, amount: number, mart: M
     : addItemToCartIfExists(newItem, amount - 1, mart, cart)
 }
 
-export function getCart(mart: Mart): CartError {
+function getCart(mart: Mart): CartError {
   const pickCart = mart.carts.pop()
   return pickCart
     ? SUCCESS(pickCart)
