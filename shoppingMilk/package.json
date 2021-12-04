@@ -13,6 +13,6 @@
   },
   "scripts": {
     "build": "yarn autoclean --force && yarn tsc -d --outDir ./dist",
-    "run": "yarn build && node ./dist"
+    "start": "yarn build && node ./dist"
   }
 }
